@@ -67,105 +67,28 @@ class boardforge_tk(Tkinter.Tk):
 		Gcode = Tkinter.Frame(self,bg=Background)
 		Gcode.grid(row=6,column=0,sticky='SEW',padx=SummaryCellPadding,pady=SummaryCellPadding,columnspan=2)	
 
-		'''
-		### Layout details
-		## Connect label
-		ConnectMachineTitle = Tkinter.Label(ConnectLabel,text=u"Connect Machine:",anchor="w")
-		ConnectMachineTitle.grid(row=0,column=0,sticky='W',padx=LabelCellPadding,pady=LabelCellPadding)
-		'''
+		# Debug
+		Debugger = Tkinter.Frame(self,bg=Background)
+		Debugger.grid(row=7,column=0,sticky='S',padx=SummaryCellPadding,pady=SummaryCellPadding,columnspan=2)
 		
+		### Layout details
 		## Connect machine		
 		# Drop down with serial ports
-		SerialPorts = Tkinter.Button(ConnectMachine,text=u"COM 8")
+		SerialPorts = Tkinter.Button(ConnectMachine,text=u"COM 8",command=self.OnPortClick)
 		SerialPorts.grid(row=0,column=1,padx=DetailsCellPadding,pady=DetailsCellPadding)		
 				
 		# Refresh
-		Refresh = Tkinter.Button(ConnectMachine,text=u"Refresh")
+		Refresh = Tkinter.Button(ConnectMachine,text=u"Refresh",command=self.OnRefreshClick)
 		Refresh.grid(row=0,column=2,padx=DetailsCellPadding,pady=DetailsCellPadding)	
 		
 		# Connect
-		Connect = Tkinter.Button(ConnectMachine,text=u"Connect")
+		Connect = Tkinter.Button(ConnectMachine,text=u"Connect",command=self.OnConnectClick)
 		Connect.grid(row=0,column=3,padx=DetailsCellPadding,pady=DetailsCellPadding)	
 		
 		# Disconnect
-		Disconnect = Tkinter.Button(ConnectMachine,text=u"Disconnect")
+		Disconnect = Tkinter.Button(ConnectMachine,text=u"Disconnect",command=self.OnDisconnectClick)
 		Disconnect.grid(row=0,column=4,padx=DetailsCellPadding,pady=DetailsCellPadding)
 
-		
-		## Manual label
-		ManualControlTitle = Tkinter.Label(ManualLabel,text=u"\n Manual Control:",anchor="w")
-		ManualControlTitle.grid(row=0,column=0,sticky='W',padx=LabelCellPadding,pady=LabelCellPadding)		
-
-		# MinusX
-		MinusX = Tkinter.Button(ManualControl,text=u"-X")
-		MinusX.grid(row=1,column=1,padx=DetailsCellPadding,pady=DetailsCellPadding)
-		
-		# PlusX
-		PlusX = Tkinter.Button(ManualControl,text=u"+X")
-		PlusX.grid(row=1,column=3,padx=DetailsCellPadding,pady=DetailsCellPadding)		
-		
-		# MinusY
-		MinusY = Tkinter.Button(ManualControl,text=u"-Y")
-		MinusY.grid(row=2,column=2,padx=DetailsCellPadding,pady=DetailsCellPadding)
-		
-		# PlusY
-		PlusY = Tkinter.Button(ManualControl,text=u"+Y")
-		PlusY.grid(row=0,column=2,padx=DetailsCellPadding,pady=DetailsCellPadding)		
-		
-		# MinusZ
-		MinusX = Tkinter.Button(ManualControl,text=u"-Z")
-		MinusX.grid(row=2,column=5,padx=DetailsCellPadding,pady=DetailsCellPadding)
-		
-		# PlusZ
-		PlusX = Tkinter.Button(ManualControl,text=u"+Z")
-		PlusX.grid(row=0,column=5,padx=DetailsCellPadding,pady=DetailsCellPadding)
-
-		# VacuumOn
-		VacuumOn = Tkinter.Button(ManualControl,text=u"Vacuum On")
-		VacuumOn.grid(row=0,column=7,padx=DetailsCellPadding,pady=DetailsCellPadding)
-
-		# VacuumOff
-		VacuumOff = Tkinter.Button(ManualControl,text=u"Vacuum Off")
-		VacuumOff.grid(row=2,column=7,padx=DetailsCellPadding,pady=DetailsCellPadding)		
-
-		
-		## Automatic label
-		AutomaticControlTitle = Tkinter.Label(AutomaticLabel,text=u"\n Automatic Control:",anchor="w")
-		AutomaticControlTitle.grid(row=0,column=0,sticky='W',padx=LabelCellPadding,pady=LabelCellPadding)	
-		
-		
-		## Load centroid file
-		# Browse for file
-		CentroidBrowse = Tkinter.Button(LoadCentroid,text=u"Browse for Centroid file...")
-		CentroidBrowse.grid(row=0,column=1,padx=DetailsCellPadding,pady=DetailsCellPadding)
-		
-		# File loaded
-		CentroidLoaded = Tkinter.Label(LoadCentroid,text=u"DRV8818centroid.txt",anchor="w")
-		CentroidLoaded.grid(row=0,column=2,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding)		
-		
-		
-		## Load feeder file
-		# Browse for file
-		FeederBrowse = Tkinter.Button(LoadFeeder,text=u"Browse for Feeder file...")
-		FeederBrowse.grid(row=0,column=1,padx=DetailsCellPadding,pady=DetailsCellPadding)
-
-		# File loaded
-		FeederLoaded = Tkinter.Label(LoadFeeder,text=u"DRV8818feeder.txt",anchor="w")
-		FeederLoaded.grid(row=0,column=2,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding)
-		
-		# Play
-		Play = Tkinter.Button(AutomaticControl,text=u"Play")
-		Play.grid(row=0,column=1,padx=DetailsCellPadding,pady=DetailsCellPadding)		
-
-		# Pause
-		Pause = Tkinter.Button(AutomaticControl,text=u"Pause")
-		Pause.grid(row=0,column=2,padx=DetailsCellPadding,pady=DetailsCellPadding)	
-
-		# Stop
-		Stop = Tkinter.Button(AutomaticControl,text=u"Stop")
-		Stop.grid(row=0,column=3,padx=DetailsCellPadding,pady=DetailsCellPadding)
-		
-		
 		## Machine status
 		# X Location
 		XLocation = Tkinter.Label(Status,text=u"X:  5.0 in",anchor="w")
@@ -181,20 +104,93 @@ class boardforge_tk(Tkinter.Tk):
 		
 		# Vacuum status
 		VacuumStatus = Tkinter.Label(Status,text=u"Vacuum:  ON",anchor="w")
-		VacuumStatus.grid(row=0,column=4,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding)				
+		VacuumStatus.grid(row=0,column=4,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding)
+		
+		
+		## Manual label
+		ManualControlTitle = Tkinter.Label(ManualLabel,text=u"\n Manual Control:",anchor="w")
+		ManualControlTitle.grid(row=0,column=0,sticky='W',padx=LabelCellPadding,pady=LabelCellPadding)		
+
+		# MinusX
+		MinusX = Tkinter.Button(ManualControl,text=u"-X",command=self.OnMinusXClick)
+		MinusX.grid(row=1,column=1,padx=DetailsCellPadding,pady=DetailsCellPadding)
+		
+		# PlusX
+		PlusX = Tkinter.Button(ManualControl,text=u"+X",command=self.OnPlusXClick)
+		PlusX.grid(row=1,column=3,padx=DetailsCellPadding,pady=DetailsCellPadding)		
+		
+		# MinusY
+		MinusY = Tkinter.Button(ManualControl,text=u"-Y",command=self.OnMinusYClick)
+		MinusY.grid(row=2,column=2,padx=DetailsCellPadding,pady=DetailsCellPadding)
+		
+		# PlusY
+		PlusY = Tkinter.Button(ManualControl,text=u"+Y",command=self.OnPlusYClick)
+		PlusY.grid(row=0,column=2,padx=DetailsCellPadding,pady=DetailsCellPadding)		
+		
+		# MinusZ
+		MinusX = Tkinter.Button(ManualControl,text=u"-Z",command=self.OnMinusZClick)
+		MinusX.grid(row=2,column=5,padx=DetailsCellPadding,pady=DetailsCellPadding)
+		
+		# PlusZ
+		PlusX = Tkinter.Button(ManualControl,text=u"+Z",command=self.OnPlusZClick)
+		PlusX.grid(row=0,column=5,padx=DetailsCellPadding,pady=DetailsCellPadding)
+
+		# VacuumOn
+		VacuumOn = Tkinter.Button(ManualControl,text=u"Vacuum On",command=self.OnVacuumOnClick)
+		VacuumOn.grid(row=0,column=7,padx=DetailsCellPadding,pady=DetailsCellPadding)
+
+		# VacuumOff
+		VacuumOff = Tkinter.Button(ManualControl,text=u"Vacuum Off",command=self.OnVacuumOffClick)
+		VacuumOff.grid(row=2,column=7,padx=DetailsCellPadding,pady=DetailsCellPadding)		
+		
+		## Automatic label
+		AutomaticControlTitle = Tkinter.Label(AutomaticLabel,text=u"\n Automatic Control:",anchor="w")
+		AutomaticControlTitle.grid(row=0,column=0,sticky='W',padx=LabelCellPadding,pady=LabelCellPadding)	
+		
+		
+		## Load centroid file
+		# Browse for file
+		CentroidBrowse = Tkinter.Button(LoadCentroid,text=u"Browse for Centroid file...",command=self.OnCentroidBrowseClick)
+		CentroidBrowse.grid(row=0,column=1,padx=DetailsCellPadding,pady=DetailsCellPadding)
+		
+		# File loaded
+		CentroidLoaded = Tkinter.Label(LoadCentroid,text=u"DRV8818centroid.txt",anchor="w")
+		CentroidLoaded.grid(row=0,column=2,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding)		
+		
+		
+		## Load feeder file
+		# Browse for file
+		FeederBrowse = Tkinter.Button(LoadFeeder,text=u"Browse for Feeder file...",command=self.OnFeederBrowseClick)
+		FeederBrowse.grid(row=0,column=1,padx=DetailsCellPadding,pady=DetailsCellPadding)
+
+		# File loaded
+		FeederLoaded = Tkinter.Label(LoadFeeder,text=u"DRV8818feeder.txt",anchor="w")
+		FeederLoaded.grid(row=0,column=2,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding)
+		
+		# Play
+		Play = Tkinter.Button(AutomaticControl,text=u"Play",command=self.OnPlayClick)
+		Play.grid(row=0,column=1,padx=DetailsCellPadding,pady=DetailsCellPadding)		
+
+		# Pause
+		Pause = Tkinter.Button(AutomaticControl,text=u"Pause",command=self.OnPauseClick)
+		Pause.grid(row=0,column=2,padx=DetailsCellPadding,pady=DetailsCellPadding)	
+
+		# Stop
+		Stop = Tkinter.Button(AutomaticControl,text=u"Stop",command=self.OnStopClick)
+		Stop.grid(row=0,column=3,padx=DetailsCellPadding,pady=DetailsCellPadding)				
 		
 		
 		## Step
 		# Previous line
-		LastLine = Tkinter.Button(Gcode,text=u"Previous Line")
+		LastLine = Tkinter.Button(Gcode,text=u"Previous Line",command=self.OnPreviousLineClick)
 		LastLine.grid(row=0,column=0,padx=DetailsCellPadding,pady=DetailsCellPadding)
 
 		# Run line
-		RunLine = Tkinter.Button(Gcode,text=u"Run Line")
+		RunLine = Tkinter.Button(Gcode,text=u"Run Line",command=self.OnRunLineClick)
 		RunLine.grid(row=1,column=0,padx=DetailsCellPadding,pady=DetailsCellPadding)
 		
 		# Next line
-		NextLine = Tkinter.Button(Gcode,text=u"Next Line")
+		NextLine = Tkinter.Button(Gcode,text=u"Next Line",command=self.OnNextLineClick)
 		NextLine.grid(row=2,column=0,padx=DetailsCellPadding,pady=DetailsCellPadding)
 		
 		
@@ -210,19 +206,79 @@ class boardforge_tk(Tkinter.Tk):
 		
 		GCodeListBox.config(yscrollcommand=GCodeScrollBar.set)
 		GCodeScrollBar.config(command=GCodeListBox.yview)
-		
-		'''
-		# Focus on text box
-		self.entry.focus_set()
-		self.entry.selection_range(0,Tkinter.END)
-		'''
-		
+
+		# Debugger
+		self.DebuggerValue = Tkinter.StringVar()
+		label = Tkinter.Label(Debugger,textvariable=self.DebuggerValue,anchor="w",bg="white")
+		label.grid(column=0,row=0,columnspan=2,sticky='EW')
+		self.DebuggerValue.set(u"Debugger")
 		
 		# Manage resizing
 		self.grid_columnconfigure(0,weight=1) # enable resizing
 		self.resizable(True,True) # enable x resizing and enable y resizing
 		self.update() # disable automatic resizing
 		self.geometry(self.geometry()) # disable automatic resizing
+	
+	#Button click events
+	def OnPortClick(self):
+		self.DebuggerValue.set(u"Port clicked")	
+
+	def OnRefreshClick(self):
+		self.DebuggerValue.set(u"Refresh clicked")			
+
+	def OnConnectClick(self):
+		self.DebuggerValue.set(u"Connect clicked")			
+		
+	def OnDisconnectClick(self):
+		self.DebuggerValue.set(u"Disconnect clicked")	
+		
+	def OnMinusXClick(self):
+		self.DebuggerValue.set(u"-X clicked")	
+
+	def OnPlusXClick(self):
+		self.DebuggerValue.set(u"+X clicked")	
+
+	def OnMinusYClick(self):
+		self.DebuggerValue.set(u"-Y clicked")	
+
+	def OnPlusYClick(self):
+		self.DebuggerValue.set(u"+Y clicked")			
+
+	def OnMinusZClick(self):
+		self.DebuggerValue.set(u"-Z clicked")	
+
+	def OnPlusZClick(self):
+		self.DebuggerValue.set(u"+Z clicked")			
+
+	def OnVacuumOffClick(self):
+		self.DebuggerValue.set(u"Vacuum off clicked")	
+
+	def OnVacuumOnClick(self):
+		self.DebuggerValue.set(u"Vacuum on clicked")	
+		
+	def OnFeederBrowseClick(self):
+		self.DebuggerValue.set(u"Browse for feeder clicked")	
+
+	def OnCentroidBrowseClick(self):
+		self.DebuggerValue.set(u"Browse for centroid clicked")		
+		
+	def OnPlayClick(self):
+		self.DebuggerValue.set(u"Play clicked")
+
+	def OnPauseClick(self):
+		self.DebuggerValue.set(u"Pause clicked")		
+		
+	def OnStopClick(self):
+		self.DebuggerValue.set(u"Stop clicked")
+		
+	def OnPreviousLineClick(self):
+		self.DebuggerValue.set(u"Previous Line clicked")
+
+	def OnRunLineClick(self):
+		self.DebuggerValue.set(u"Run Line clicked")		
+		
+	def OnNextLineClick(self):
+		self.DebuggerValue.set(u"Next Line clicked")
 		
 if __name__ == "__main__":
 	app = boardforge_tk(None)
