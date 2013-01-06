@@ -30,140 +30,165 @@ class boardforge_tk(Tkinter.Tk):
 	def initialize(self):
 		self.grid()
 		
+		### Layout summary
+		ConnectMachine = Tkinter.Frame(self)
+		ConnectMachine.grid(row=0,column=0)
+		
+		LoadCentroid = Tkinter.Frame(self)
+		LoadCentroid.grid(row=1,column=0)		
+		
+		LoadFeeder = Tkinter.Frame(self)
+		LoadFeeder.grid(row=2,column=0)	
+		
+		ManualControl = Tkinter.Frame(self)
+		ManualControl.grid(row=3,column=0)	
+		
+		AutomaticControl = Tkinter.Frame(self)
+		AutomaticControl.grid(row=4,column=0)			
+		
+		Status = Tkinter.Frame(self)
+		Status.grid(row=5,column=0)			
+		
+		### Layout details
 		## Connect machine
-		ConnectMachine = Tkinter.Label(self,text=u"Connect machine:",anchor="w")
-		ConnectMachine.grid(row=0,column=0,sticky='W')
+		ConnectMachineTitle = Tkinter.Label(ConnectMachine,text=u"Connect machine:",anchor="w")
+		ConnectMachineTitle.grid(row=0,column=0,sticky='W')
 		
 		# Drop down with serial ports
-		SerialPorts = Tkinter.Button(self,text=u"COM 8")
+		SerialPorts = Tkinter.Button(ConnectMachine,text=u"COM 8")
 		SerialPorts.grid(row=0,column=1)		
 				
 		# Refresh
-		Refresh = Tkinter.Button(self,text=u"Refresh")
+		Refresh = Tkinter.Button(ConnectMachine,text=u"Refresh")
 		Refresh.grid(row=0,column=2)	
 		
 		# Connect
-		Connect = Tkinter.Button(self,text=u"Connect")
+		Connect = Tkinter.Button(ConnectMachine,text=u"Connect")
 		Connect.grid(row=0,column=3)	
 		
 		# Disconnect
-		Disconnect = Tkinter.Button(self,text=u"Disconnect")
+		Disconnect = Tkinter.Button(ConnectMachine,text=u"Disconnect")
 		Disconnect.grid(row=0,column=4)
 
+		
 		## Load centroid file
-		LoadCentroid = Tkinter.Label(self,text=u"Load centroid file:",anchor="w")
-		LoadCentroid.grid(row=1,column=0,sticky='W')
+		LoadCentroidTitle = Tkinter.Label(LoadCentroid,text=u"Load centroid file:",anchor="w")
+		LoadCentroidTitle.grid(row=0,column=0,sticky='W')
 
 		# File loaded
-		CentroidLoaded = Tkinter.Label(self,text=u"DRV8818centroid.txt",anchor="w")
-		CentroidLoaded.grid(row=1,column=1,sticky='W')
+		CentroidLoaded = Tkinter.Label(LoadCentroid,text=u"DRV8818centroid.txt",anchor="w")
+		CentroidLoaded.grid(row=0,column=1,sticky='W')
 		
 		# Browse for file
-		CentroidBrowse = Tkinter.Button(self,text=u"Browse...")
-		CentroidBrowse.grid(row=1,column=2)
+		CentroidBrowse = Tkinter.Button(LoadCentroid,text=u"Browse...")
+		CentroidBrowse.grid(row=0,column=2)
+		
 		
 		## Load feeder file
-		LoadFeeder = Tkinter.Label(self,text=u"Load feeder file:",anchor="w")
-		LoadFeeder.grid(row=2,column=0,sticky='W')
+		LoadFeederTitle = Tkinter.Label(LoadFeeder,text=u"Load feeder file:",anchor="w")
+		LoadFeederTitle.grid(row=0,column=0,sticky='W')
 
 		# File loaded
-		FeederLoaded = Tkinter.Label(self,text=u"DRV8818feeder.txt",anchor="w")
-		FeederLoaded.grid(row=2,column=1,sticky='W')
+		FeederLoaded = Tkinter.Label(LoadFeeder,text=u"DRV8818feeder.txt",anchor="w")
+		FeederLoaded.grid(row=0,column=1,sticky='W')
 		
 		# Browse for file
-		FeederBrowse = Tkinter.Button(self,text=u"Browse...")
-		FeederBrowse.grid(row=2,column=2)
+		FeederBrowse = Tkinter.Button(LoadFeeder,text=u"Browse...")
+		FeederBrowse.grid(row=0,column=2)
+		
 		
 		## Manual control
-		ManualControl = Tkinter.Label(self,text=u"Manual Control:",anchor="w")
-		ManualControl.grid(row=3,column=0,sticky='W')
+		ManualControlTitle = Tkinter.Label(ManualControl,text=u"Manual Control:",anchor="w")
+		ManualControlTitle.grid(row=0,column=0,sticky='W')
 		
 		# MinusX
-		MinusX = Tkinter.Button(self,text=u"-X")
-		MinusX.grid(row=3,column=1)
+		MinusX = Tkinter.Button(ManualControl,text=u"-X")
+		MinusX.grid(row=0,column=1)
 		
 		# PlusX
-		PlusX = Tkinter.Button(self,text=u"+X")
-		PlusX.grid(row=3,column=2)
+		PlusX = Tkinter.Button(ManualControl,text=u"+X")
+		PlusX.grid(row=0,column=2)
 		
 		# MinusY
-		MinusY = Tkinter.Button(self,text=u"-Y")
-		MinusY.grid(row=3,column=3)
+		MinusY = Tkinter.Button(ManualControl,text=u"-Y")
+		MinusY.grid(row=0,column=3)
 		
 		# PlusY
-		PlusY = Tkinter.Button(self,text=u"+Y")
-		PlusY.grid(row=3,column=4)		
+		PlusY = Tkinter.Button(ManualControl,text=u"+Y")
+		PlusY.grid(row=0,column=4)		
 		
 		# MinusZ
-		MinusX = Tkinter.Button(self,text=u"-Z")
-		MinusX.grid(row=3,column=5)
+		MinusX = Tkinter.Button(ManualControl,text=u"-Z")
+		MinusX.grid(row=0,column=5)
 		
 		# PlusZ
-		PlusX = Tkinter.Button(self,text=u"+Z")
-		PlusX.grid(row=3,column=6)
+		PlusX = Tkinter.Button(ManualControl,text=u"+Z")
+		PlusX.grid(row=0,column=6)
 
 		# VacuumOn
-		VacuumOn = Tkinter.Button(self,text=u"Vacuum On")
-		VacuumOn.grid(row=3,column=7)
+		VacuumOn = Tkinter.Button(ManualControl,text=u"Vacuum On")
+		VacuumOn.grid(row=0,column=7)
 
 		# VacuumOff
-		VacuumOff = Tkinter.Button(self,text=u"Vacuum Off")
-		VacuumOff.grid(row=3,column=8)		
+		VacuumOff = Tkinter.Button(ManualControl,text=u"Vacuum Off")
+		VacuumOff.grid(row=0,column=8)		
 
+		
 		## Automatic control
-		AutomaticControl = Tkinter.Label(self,text=u"Automatic Control:",anchor="w")
-		AutomaticControl.grid(row=4,column=0,sticky='W')
+		AutomaticControlTitle = Tkinter.Label(AutomaticControl,text=u"Automatic Control:",anchor="w")
+		AutomaticControlTitle.grid(row=0,column=0,sticky='W')
 		
 		# Play
-		Play = Tkinter.Button(self,text=u"Play")
-		Play.grid(row=4,column=1)		
+		Play = Tkinter.Button(AutomaticControl,text=u"Play")
+		Play.grid(row=0,column=1)		
 
 		# Pause
-		Pause = Tkinter.Button(self,text=u"Pause")
-		Pause.grid(row=4,column=2)	
+		Pause = Tkinter.Button(AutomaticControl,text=u"Pause")
+		Pause.grid(row=0,column=2)	
 
 		# Stop
-		Stop = Tkinter.Button(self,text=u"Stop")
-		Stop.grid(row=4,column=3)
+		Stop = Tkinter.Button(AutomaticControl,text=u"Stop")
+		Stop.grid(row=0,column=3)
 		
 		# Previous line
-		PreviousLine = Tkinter.Button(self,text=u"Previous Line")
-		PreviousLine.grid(row=4,column=4)
+		PreviousLine = Tkinter.Button(AutomaticControl,text=u"Previous Line")
+		PreviousLine.grid(row=0,column=4)
 
 		# Next line
-		NextLine = Tkinter.Button(self,text=u"Next Line")
-		NextLine.grid(row=4,column=5)
+		NextLine = Tkinter.Button(AutomaticControl,text=u"Next Line")
+		NextLine.grid(row=0,column=5)
 
 		# Step
-		Step = Tkinter.Button(self,text=u"Step")
-		Step.grid(row=4,column=6)		
+		Step = Tkinter.Button(AutomaticControl,text=u"Step")
+		Step.grid(row=0,column=6)		
+		
 		
 		## Status
-		Status = Tkinter.Label(self,text=u"Status:",anchor="w")
-		Status.grid(row=5,column=0,sticky='W')
+		StatusTitle = Tkinter.Label(Status,text=u"Status:",anchor="w")
+		StatusTitle.grid(row=0,column=0,sticky='W')
 		
 		# X Location
-		XLocation = Tkinter.Label(self,text=u"X:  5.0 in",anchor="w")
-		XLocation.grid(row=5,column=1,sticky='W')
+		XLocation = Tkinter.Label(Status,text=u"X:  5.0 in",anchor="w")
+		XLocation.grid(row=0,column=1,sticky='W')
 		
 		# Y Location
-		YLocation = Tkinter.Label(self,text=u"Y:  6.0 in",anchor="w")
-		YLocation.grid(row=5,column=2,sticky='W')		
+		YLocation = Tkinter.Label(Status,text=u"Y:  6.0 in",anchor="w")
+		YLocation.grid(row=0,column=2,sticky='W')		
 		
 		# Z Location
-		ZLocation = Tkinter.Label(self,text=u"Z:  1.0 in",anchor="w")
-		ZLocation.grid(row=5,column=3,sticky='W')		
+		ZLocation = Tkinter.Label(Status,text=u"Z:  1.0 in",anchor="w")
+		ZLocation.grid(row=0,column=3,sticky='W')		
 		
 		# Vacuum status
-		VacuumStatus = Tkinter.Label(self,text=u"Vacuum:  ON",anchor="w")
-		VacuumStatus.grid(row=5,column=4,sticky='W')				
+		VacuumStatus = Tkinter.Label(Status,text=u"Vacuum:  ON",anchor="w")
+		VacuumStatus.grid(row=0,column=4,sticky='W')				
 		
 		# G Code viewer
-		GCodeListBox = Tkinter.Listbox(self)
-		GCodeListBox.grid(row=6,column=0,columnspan=9,sticky='SEW')
+		GCodeListBox = Tkinter.Listbox(Status)
+		GCodeListBox.grid(row=1,column=0,columnspan=5,sticky='SEW')
 		
-		GCodeScrollBar = Tkinter.Scrollbar(self)
-		GCodeScrollBar.grid(row=6,column=0,columnspan=9,sticky='NSE')
+		GCodeScrollBar = Tkinter.Scrollbar(Status)
+		GCodeScrollBar.grid(row=1,column=0,columnspan=5,sticky='NSE')
 		
 		for i in range(100):
 			GCodeListBox.insert(i,"g0 x"+str(i)+" f1600")
@@ -171,55 +196,18 @@ class boardforge_tk(Tkinter.Tk):
 		GCodeListBox.config(yscrollcommand=GCodeScrollBar.set)
 		GCodeScrollBar.config(command=GCodeListBox.yview)
 		
-
-		
 		'''
-		# Text box
-		self.entryVariable = Tkinter.StringVar()
-		self.entry = Tkinter.Entry(self,textvariable=self.entryVariable)
-		self.entry.grid(column=0,row=0,sticky='EW')
-		self.entry.bind("<Return>", self.OnPressEnter)
-		self.entryVariable.set(u"Enter text here.")
-		
-		# Button
-		button = Tkinter.Button(self,text=u"Button",command=self.OnButtonClick)
-		button.grid(column=1,row=0)
-		
-		# Label
-		self.labelVariable = Tkinter.StringVar()
-		label = Tkinter.Label(self,textvariable=self.labelVariable,anchor="w",fg="white",bg="blue")
-		label.grid(column=0,row=1,columnspan=2,sticky='EW')
-		self.labelVariable.set(u"Hello!")
-				
 		# Focus on text box
 		self.entry.focus_set()
 		self.entry.selection_range(0,Tkinter.END)
 		'''
+		
 		
 		# Manage resizing
 		self.grid_columnconfigure(0,weight=1) # enable resizing
 		self.resizable(True,True) # enable x resizing and enable y resizing
 		self.update() # disable automatic resizing
 		self.geometry(self.geometry()) # disable automatic resizing
-	'''
-	# Returns an opened file in read mode.
-	def askopenfile(self):
-		return tkFileDialog.askopenfile(mode='r', **self.file_opt)
-		
-	def OnButtonClick(self):
-		self.labelVariable.set(self.entryVariable.get()+" You clicked the button!")
-		
-		# Focus on text box
-		self.entry.focus_set()
-		self.entry.selection_range(0,Tkinter.END)
-		
-	def OnPressEnter(self,event):
-		self.labelVariable.set(self.entryVariable.get()+" You pressed enter!")
-		
-		# Focus on text box		
-		self.entry.focus_set()
-		self.entry.selection_range(0,Tkinter.END)
-	'''
 		
 if __name__ == "__main__":
 	app = boardforge_tk(None)
