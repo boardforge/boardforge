@@ -33,38 +33,39 @@ class boardforge_tk(Tkinter.Tk):
 		LabelCellPadding = 0
 		SummaryCellPadding = 5
 		DetailsCellPadding = 5
+		Background = '#D4D0C8' # Default #D4D0C8
 		
 		
 		### Layout summary		
-		ConnectMachine = Tkinter.Frame(self)
+		ConnectMachine = Tkinter.Frame(self,bg=Background)
 		ConnectMachine.grid(row=0,column=0,sticky='W',padx=SummaryCellPadding,pady=SummaryCellPadding)
 		
-		Status = Tkinter.Frame(self)
+		Status = Tkinter.Frame(self,bg=Background)
 		Status.grid(row=1,column=0,sticky='W',padx=SummaryCellPadding,pady=SummaryCellPadding)		
 		
 		# Manual control
-		ManualLabel = Tkinter.Frame(self)
+		ManualLabel = Tkinter.Frame(self,bg=Background)
 		ManualLabel.grid(row=2,column=0,sticky='W',padx=LabelCellPadding,pady=LabelCellPadding)			
 		
-		ManualControl = Tkinter.Frame(self)
+		ManualControl = Tkinter.Frame(self,bg=Background)
 		ManualControl.grid(row=3,column=0,sticky='W',padx=SummaryCellPadding,pady=SummaryCellPadding,rowspan=3)		
 		
 		# Automatic control
-		AutomaticLabel = Tkinter.Frame(self)
+		AutomaticLabel = Tkinter.Frame(self,bg=Background)
 		AutomaticLabel.grid(row=2,column=1,sticky='W',padx=LabelCellPadding,pady=LabelCellPadding)				
 		
-		LoadCentroid = Tkinter.Frame(self)
+		LoadCentroid = Tkinter.Frame(self,bg=Background)
 		LoadCentroid.grid(row=3,column=1,sticky='W',padx=SummaryCellPadding,pady=SummaryCellPadding)		
 		
-		LoadFeeder = Tkinter.Frame(self)
+		LoadFeeder = Tkinter.Frame(self,bg=Background)
 		LoadFeeder.grid(row=4,column=1,sticky='W',padx=SummaryCellPadding,pady=SummaryCellPadding)	
 		
-		AutomaticControl = Tkinter.Frame(self)
+		AutomaticControl = Tkinter.Frame(self,bg=Background)
 		AutomaticControl.grid(row=5,column=1,sticky='W',padx=SummaryCellPadding,pady=SummaryCellPadding)			
 		
 		# Gcode viewer
-		Gcode = Tkinter.Frame(self)
-		Gcode.grid(row=6,column=0,sticky='W',padx=SummaryCellPadding,pady=SummaryCellPadding,columnspan=2)	
+		Gcode = Tkinter.Frame(self,bg=Background)
+		Gcode.grid(row=6,column=0,sticky='SEW',padx=SummaryCellPadding,pady=SummaryCellPadding,columnspan=2)	
 
 		'''
 		### Layout details
