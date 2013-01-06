@@ -35,43 +35,44 @@ class boardforge_tk(Tkinter.Tk):
 		DetailsCellPadding = 5
 		
 		
-		### Layout summary
-		ConnectLabel = Tkinter.Frame(self)
-		ConnectLabel.grid(row=0,column=0,sticky='W',padx=LabelCellPadding,pady=LabelCellPadding)		
-		
+		### Layout summary		
 		ConnectMachine = Tkinter.Frame(self)
-		ConnectMachine.grid(row=1,column=0,sticky='W',padx=SummaryCellPadding,pady=SummaryCellPadding)
+		ConnectMachine.grid(row=0,column=0,sticky='W',padx=SummaryCellPadding,pady=SummaryCellPadding)
 		
+		Status = Tkinter.Frame(self)
+		Status.grid(row=1,column=0,sticky='W',padx=SummaryCellPadding,pady=SummaryCellPadding)		
+		
+		# Manual control
 		ManualLabel = Tkinter.Frame(self)
 		ManualLabel.grid(row=2,column=0,sticky='W',padx=LabelCellPadding,pady=LabelCellPadding)			
 		
 		ManualControl = Tkinter.Frame(self)
-		ManualControl.grid(row=3,column=0,sticky='W',padx=SummaryCellPadding,pady=SummaryCellPadding)	
-				
-		Status = Tkinter.Frame(self)
-		Status.grid(row=4,column=0,sticky='W',padx=SummaryCellPadding,pady=SummaryCellPadding)	
+		ManualControl.grid(row=3,column=0,sticky='W',padx=SummaryCellPadding,pady=SummaryCellPadding,rowspan=3)		
 		
+		# Automatic control
 		AutomaticLabel = Tkinter.Frame(self)
-		AutomaticLabel.grid(row=5,column=0,sticky='W',padx=LabelCellPadding,pady=LabelCellPadding)				
+		AutomaticLabel.grid(row=2,column=1,sticky='W',padx=LabelCellPadding,pady=LabelCellPadding)				
 		
 		LoadCentroid = Tkinter.Frame(self)
-		LoadCentroid.grid(row=6,column=0,sticky='W',padx=SummaryCellPadding,pady=SummaryCellPadding)		
+		LoadCentroid.grid(row=3,column=1,sticky='W',padx=SummaryCellPadding,pady=SummaryCellPadding)		
 		
 		LoadFeeder = Tkinter.Frame(self)
-		LoadFeeder.grid(row=7,column=0,sticky='W',padx=SummaryCellPadding,pady=SummaryCellPadding)	
+		LoadFeeder.grid(row=4,column=1,sticky='W',padx=SummaryCellPadding,pady=SummaryCellPadding)	
 		
 		AutomaticControl = Tkinter.Frame(self)
-		AutomaticControl.grid(row=8,column=0,sticky='W',padx=SummaryCellPadding,pady=SummaryCellPadding)			
+		AutomaticControl.grid(row=5,column=1,sticky='W',padx=SummaryCellPadding,pady=SummaryCellPadding)			
 		
+		# Gcode viewer
 		Gcode = Tkinter.Frame(self)
-		Gcode.grid(row=9,column=0,sticky='W',padx=SummaryCellPadding,pady=SummaryCellPadding)	
+		Gcode.grid(row=6,column=0,sticky='W',padx=SummaryCellPadding,pady=SummaryCellPadding,columnspan=2)	
 
-		
+		'''
 		### Layout details
 		## Connect label
-		ConnectMachineTitle = Tkinter.Label(ConnectLabel,text=u"Connect machine:",anchor="w")
+		ConnectMachineTitle = Tkinter.Label(ConnectLabel,text=u"Connect Machine:",anchor="w")
 		ConnectMachineTitle.grid(row=0,column=0,sticky='W',padx=LabelCellPadding,pady=LabelCellPadding)
-
+		'''
+		
 		## Connect machine		
 		# Drop down with serial ports
 		SerialPorts = Tkinter.Button(ConnectMachine,text=u"COM 8")
@@ -89,6 +90,7 @@ class boardforge_tk(Tkinter.Tk):
 		Disconnect = Tkinter.Button(ConnectMachine,text=u"Disconnect")
 		Disconnect.grid(row=0,column=4,padx=DetailsCellPadding,pady=DetailsCellPadding)
 
+		
 		## Manual label
 		ManualControlTitle = Tkinter.Label(ManualLabel,text=u"\n Manual Control:",anchor="w")
 		ManualControlTitle.grid(row=0,column=0,sticky='W',padx=LabelCellPadding,pady=LabelCellPadding)		
@@ -150,13 +152,6 @@ class boardforge_tk(Tkinter.Tk):
 		FeederLoaded = Tkinter.Label(LoadFeeder,text=u"DRV8818feeder.txt",anchor="w")
 		FeederLoaded.grid(row=0,column=2,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding)
 		
-
-		
-		'''
-		## Automatic control
-		AutomaticControlTitle = Tkinter.Label(AutomaticControl,text=u"Automatic Control:",anchor="w")
-		AutomaticControlTitle.grid(row=0,column=0,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding)
-		'''
 		# Play
 		Play = Tkinter.Button(AutomaticControl,text=u"Play")
 		Play.grid(row=0,column=1,padx=DetailsCellPadding,pady=DetailsCellPadding)		
@@ -168,12 +163,9 @@ class boardforge_tk(Tkinter.Tk):
 		# Stop
 		Stop = Tkinter.Button(AutomaticControl,text=u"Stop")
 		Stop.grid(row=0,column=3,padx=DetailsCellPadding,pady=DetailsCellPadding)
-				
-		'''
-		## Status
-		StatusTitle = Tkinter.Label(Status,text=u"Status:",anchor="w")
-		StatusTitle.grid(row=0,column=0,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding)
-		'''
+		
+		
+		## Machine status
 		# X Location
 		XLocation = Tkinter.Label(Status,text=u"X:  5.0 in",anchor="w")
 		XLocation.grid(row=0,column=1,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding)
