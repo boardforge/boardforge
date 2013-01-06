@@ -218,7 +218,8 @@ class boardforge_tk(Tkinter.Tk):
 		self.resizable(True,True) # enable x resizing and enable y resizing
 		self.update() # disable automatic resizing
 		self.geometry(self.geometry()) # disable automatic resizing
-	
+
+		
 	#Button click events
 	def OnPortClick(self):
 		self.DebuggerValue.set(u"Port clicked")	
@@ -279,6 +280,7 @@ class boardforge_tk(Tkinter.Tk):
 		
 	def OnNextLineClick(self):
 		self.DebuggerValue.set(u"Next Line clicked")
+
 		
 if __name__ == "__main__":
 	app = boardforge_tk(None)
