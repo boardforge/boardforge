@@ -32,22 +32,22 @@ class boardforge_tk(Tkinter.Tk):
 		
 		### Layout summary
 		ConnectMachine = Tkinter.Frame(self)
-		ConnectMachine.grid(row=0,column=0)
-		
-		LoadCentroid = Tkinter.Frame(self)
-		LoadCentroid.grid(row=1,column=0)		
-		
-		LoadFeeder = Tkinter.Frame(self)
-		LoadFeeder.grid(row=2,column=0)	
+		ConnectMachine.grid(row=0,column=0,sticky='W')
 		
 		ManualControl = Tkinter.Frame(self)
-		ManualControl.grid(row=3,column=0)	
+		ManualControl.grid(row=1,column=0,sticky='W')	
+		
+		LoadCentroid = Tkinter.Frame(self)
+		LoadCentroid.grid(row=2,column=0,sticky='W')		
+		
+		LoadFeeder = Tkinter.Frame(self)
+		LoadFeeder.grid(row=3,column=0,sticky='W')	
 		
 		AutomaticControl = Tkinter.Frame(self)
-		AutomaticControl.grid(row=4,column=0)			
+		AutomaticControl.grid(row=4,column=0,sticky='W')			
 		
 		Status = Tkinter.Frame(self)
-		Status.grid(row=5,column=0)			
+		Status.grid(row=5,column=0,sticky='W')			
 		
 		### Layout details
 		## Connect machine
@@ -69,6 +69,43 @@ class boardforge_tk(Tkinter.Tk):
 		# Disconnect
 		Disconnect = Tkinter.Button(ConnectMachine,text=u"Disconnect")
 		Disconnect.grid(row=0,column=4)
+
+		
+		## Manual control
+		ManualControlTitle = Tkinter.Label(ManualControl,text=u"Manual Control:",anchor="w")
+		ManualControlTitle.grid(row=0,column=0,rowspan=3,sticky='W')
+		
+		# MinusX
+		MinusX = Tkinter.Button(ManualControl,text=u"-X")
+		MinusX.grid(row=1,column=1)
+		
+		# PlusX
+		PlusX = Tkinter.Button(ManualControl,text=u"+X")
+		PlusX.grid(row=1,column=3)
+		
+		# MinusY
+		MinusY = Tkinter.Button(ManualControl,text=u"-Y")
+		MinusY.grid(row=2,column=2)
+		
+		# PlusY
+		PlusY = Tkinter.Button(ManualControl,text=u"+Y")
+		PlusY.grid(row=0,column=2)		
+		
+		# MinusZ
+		MinusX = Tkinter.Button(ManualControl,text=u"-Z")
+		MinusX.grid(row=2,column=5)
+		
+		# PlusZ
+		PlusX = Tkinter.Button(ManualControl,text=u"+Z")
+		PlusX.grid(row=0,column=5)
+
+		# VacuumOn
+		VacuumOn = Tkinter.Button(ManualControl,text=u"Vacuum On")
+		VacuumOn.grid(row=0,column=7)
+
+		# VacuumOff
+		VacuumOff = Tkinter.Button(ManualControl,text=u"Vacuum Off")
+		VacuumOff.grid(row=2,column=7)		
 
 		
 		## Load centroid file
@@ -96,43 +133,6 @@ class boardforge_tk(Tkinter.Tk):
 		FeederBrowse = Tkinter.Button(LoadFeeder,text=u"Browse...")
 		FeederBrowse.grid(row=0,column=2)
 		
-		
-		## Manual control
-		ManualControlTitle = Tkinter.Label(ManualControl,text=u"Manual Control:",anchor="w")
-		ManualControlTitle.grid(row=0,column=0,sticky='W')
-		
-		# MinusX
-		MinusX = Tkinter.Button(ManualControl,text=u"-X")
-		MinusX.grid(row=0,column=1)
-		
-		# PlusX
-		PlusX = Tkinter.Button(ManualControl,text=u"+X")
-		PlusX.grid(row=0,column=2)
-		
-		# MinusY
-		MinusY = Tkinter.Button(ManualControl,text=u"-Y")
-		MinusY.grid(row=0,column=3)
-		
-		# PlusY
-		PlusY = Tkinter.Button(ManualControl,text=u"+Y")
-		PlusY.grid(row=0,column=4)		
-		
-		# MinusZ
-		MinusX = Tkinter.Button(ManualControl,text=u"-Z")
-		MinusX.grid(row=0,column=5)
-		
-		# PlusZ
-		PlusX = Tkinter.Button(ManualControl,text=u"+Z")
-		PlusX.grid(row=0,column=6)
-
-		# VacuumOn
-		VacuumOn = Tkinter.Button(ManualControl,text=u"Vacuum On")
-		VacuumOn.grid(row=0,column=7)
-
-		# VacuumOff
-		VacuumOff = Tkinter.Button(ManualControl,text=u"Vacuum Off")
-		VacuumOff.grid(row=0,column=8)		
-
 		
 		## Automatic control
 		AutomaticControlTitle = Tkinter.Label(AutomaticControl,text=u"Automatic Control:",anchor="w")
