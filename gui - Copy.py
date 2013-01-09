@@ -18,7 +18,6 @@
 #	File loading - http://tkinter.unpythonic.net/wiki/tkFileDialog
 #	Gcode area listbox - http://www.tutorialspoint.com/python/tk_listbox.htm
 #	Gcode area scrollbar - http://effbot.org/zone/tkinter-scrollbar-patterns.htm
-# 	Menu - http://www.tutorialspoint.com/python/tk_menubutton.htm
 
 import Tkinter
 
@@ -39,10 +38,20 @@ class boardforge_tk(Tkinter.Tk):
 		
 		### Layout summary		
 		ConnectMachine = Tkinter.Frame(self,bg=Background)
-		ConnectMachine.grid(row=0,column=0,sticky='W',padx=SummaryCellPadding,pady=SummaryCellPadding,columnspan=4)
+		ConnectMachine.grid(row=0,column=0,sticky='W',padx=SummaryCellPadding,pady=SummaryCellPadding)
 		
 		Status = Tkinter.Frame(self,bg=Background)
-		Status.grid(row=1,column=0,padx=SummaryCellPadding,pady=SummaryCellPadding,columnspan=4)		
+		Status.grid(row=1,column=0,sticky='W',padx=SummaryCellPadding,pady=SummaryCellPadding)		
+		
+		# Manual control
+		ManualLabel = Tkinter.Frame(self,bg=Background)
+		ManualLabel.grid(row=2,column=1,sticky='W',padx=LabelCellPadding,pady=LabelCellPadding)			
+		
+		ManualControl = Tkinter.Frame(self,bg=Background)
+		ManualControl.grid(row=3,column=1,sticky='NW',padx=SummaryCellPadding,pady=SummaryCellPadding,rowspan=3)		
+
+		ManualGcodeSend = Tkinter.Frame(self,bg=Background)
+		ManualGcodeSend.grid(row=6,column=1,sticky='NW',padx=SummaryCellPadding,pady=SummaryCellPadding)		
 		
 		# Automatic control
 		AutomaticLabel = Tkinter.Frame(self,bg=Background)
@@ -52,93 +61,64 @@ class boardforge_tk(Tkinter.Tk):
 		LoadCentroid.grid(row=3,column=0,sticky='W',padx=SummaryCellPadding,pady=SummaryCellPadding)		
 		
 		LoadFeeder = Tkinter.Frame(self,bg=Background)
-		LoadFeeder.grid(row=4,column=0,sticky='W',padx=SummaryCellPadding,pady=SummaryCellPadding)			
-		
-		MachineSettings = Tkinter.Frame(self,bg=Background)
-		MachineSettings.grid(row=3,column=1,sticky='NW',padx=SummaryCellPadding,pady=SummaryCellPadding,rowspan=2)			
-
-		VisionFrame = Tkinter.Frame(self,bg=Background)
-		VisionFrame.grid(row=3,column=2,sticky='SEW',padx=SummaryCellPadding,pady=SummaryCellPadding,rowspan=3)	
-		
-		# Manual control
-		ManualLabel = Tkinter.Frame(self,bg=Background)
-		ManualLabel.grid(row=2,column=3,sticky='W',padx=LabelCellPadding,pady=LabelCellPadding)			
-		
-		ManualControl = Tkinter.Frame(self,bg=Background)
-		ManualControl.grid(row=3,column=3,sticky='NW',padx=SummaryCellPadding,pady=SummaryCellPadding,rowspan=3)		
-
-		ManualGcodeSend = Tkinter.Frame(self,bg=Background)
-		ManualGcodeSend.grid(row=5,column=3,sticky='NW',padx=SummaryCellPadding,pady=SummaryCellPadding)			
-		
-		# Component plan viewer
-		ComponentPlan = Tkinter.Frame(self,bg=Background)
-		ComponentPlan.grid(row=7,column=0,sticky='SEW',padx=SummaryCellPadding,pady=SummaryCellPadding,columnspan=3)	
-		
-		'''
-		# Gcode viewer
-		Gcode = Tkinter.Frame(self,bg=Background)
-		Gcode.grid(row=7,column=3,sticky='SEW',padx=SummaryCellPadding,pady=SummaryCellPadding)			
-		'''
+		LoadFeeder.grid(row=4,column=0,sticky='W',padx=SummaryCellPadding,pady=SummaryCellPadding)	
 		
 		AutomaticControl = Tkinter.Frame(self,bg=Background)
-		AutomaticControl.grid(row=8,column=0,padx=SummaryCellPadding,pady=SummaryCellPadding,columnspan=3)			
+		AutomaticControl.grid(row=5,column=0,sticky='W',padx=SummaryCellPadding,pady=SummaryCellPadding)			
+		
+		MachineSettings = Tkinter.Frame(self,bg=Background)
+		MachineSettings.grid(row=6,column=0,sticky='W',padx=SummaryCellPadding,pady=SummaryCellPadding)			
+
+		# Component plan viewer
+		ComponentPlan = Tkinter.Frame(self,bg=Background)
+		ComponentPlan.grid(row=7,column=0,sticky='SEW',padx=SummaryCellPadding,pady=SummaryCellPadding,columnspan=2)	
+		
+		# Gcode viewer
+		Gcode = Tkinter.Frame(self,bg=Background)
+		Gcode.grid(row=7,column=1,sticky='SEW',padx=SummaryCellPadding,pady=SummaryCellPadding,columnspan=2)	
+
+		# Vision
+		VisionFrame = Tkinter.Frame(self,bg=Background)
+		VisionFrame.grid(row=7,column=2,sticky='SEW',padx=SummaryCellPadding,pady=SummaryCellPadding,columnspan=2)			
 		
 		# Debug
 		Debugger = Tkinter.Frame(self,bg=Background)
-		Debugger.grid(row=9,column=0,sticky='S',padx=SummaryCellPadding,pady=SummaryCellPadding,columnspan=3)
+		Debugger.grid(row=8,column=0,sticky='S',padx=SummaryCellPadding,pady=SummaryCellPadding,columnspan=2)
 		
 		### Layout details
 		## Connect machine		
-		# Find Machine
-		FindMachine = Tkinter.Button(ConnectMachine,text=u"Find machine",command=self.OnFindMachineClick)
-		FindMachine.grid(row=0,column=0,padx=DetailsCellPadding,pady=DetailsCellPadding)
-		
-		## Serial port selector		
-		SerialPorts = Tkinter.Listbox(ConnectMachine,height=3,width=10)
-		SerialPorts.grid(row=0,column=1,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding,rowspan=3)
-		
-		SerialPortsScrollBar = Tkinter.Scrollbar(ConnectMachine)
-		SerialPortsScrollBar.grid(row=0,column=1,sticky='E',padx=DetailsCellPadding,pady=DetailsCellPadding,rowspan=3)
-		
-		for i in range(15):
-			SerialPorts.insert(i,"COM"+str(i+1)+"")
-		
-		SerialPorts.config(yscrollcommand=SerialPortsScrollBar.set)
-		SerialPortsScrollBar.config(command=SerialPorts.yview)		
-		
+		# Drop down with serial ports
+		SerialPorts = Tkinter.Button(ConnectMachine,text=u"COM 8",command=self.OnPortClick)
+		SerialPorts.grid(row=0,column=1,padx=DetailsCellPadding,pady=DetailsCellPadding)		
+				
+		# Refresh
+		Refresh = Tkinter.Button(ConnectMachine,text=u"Refresh",command=self.OnRefreshClick)
+		Refresh.grid(row=0,column=2,padx=DetailsCellPadding,pady=DetailsCellPadding)	
 		
 		# Connect
 		Connect = Tkinter.Button(ConnectMachine,text=u"Connect",command=self.OnConnectClick)
-		Connect.grid(row=0,column=2,padx=DetailsCellPadding,pady=DetailsCellPadding)	
+		Connect.grid(row=0,column=3,padx=DetailsCellPadding,pady=DetailsCellPadding)	
 		
 		# Disconnect
 		Disconnect = Tkinter.Button(ConnectMachine,text=u"Disconnect",command=self.OnDisconnectClick)
-		Disconnect.grid(row=0,column=3,padx=DetailsCellPadding,pady=DetailsCellPadding)
-		
-		# ConnectionStatus
-		ConnectionStatus = Tkinter.Label(ConnectMachine,text=u"Connected on COM8",anchor="w")
-		ConnectionStatus.grid(row=0,column=4,padx=DetailsCellPadding,pady=DetailsCellPadding)		
+		Disconnect.grid(row=0,column=4,padx=DetailsCellPadding,pady=DetailsCellPadding)
 
 		## Machine status
 		# X Location
-		XLocation = Tkinter.Label(Status,text=u"\n X:  5.0 inches",anchor="w")
-		XLocation.grid(row=0,column=1,padx=DetailsCellPadding,pady=DetailsCellPadding)
+		XLocation = Tkinter.Label(Status,text=u"X:  5.0 in",anchor="w")
+		XLocation.grid(row=0,column=1,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding)
 		
 		# Y Location
-		YLocation = Tkinter.Label(Status,text=u"\n Y:  6.0 inches",anchor="w")
-		YLocation.grid(row=0,column=2,padx=DetailsCellPadding,pady=DetailsCellPadding)		
+		YLocation = Tkinter.Label(Status,text=u"Y:  6.0 in",anchor="w")
+		YLocation.grid(row=0,column=2,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding)		
 		
 		# Z Location
-		ZLocation = Tkinter.Label(Status,text=u"\n Z:  1.0 inches",anchor="w")
-		ZLocation.grid(row=0,column=3,padx=DetailsCellPadding,pady=DetailsCellPadding)		
-
-		# Rotation
-		Rotation = Tkinter.Label(Status,text=u"\n Rotation: 90 degrees",anchor="w")
-		Rotation.grid(row=0,column=4,padx=DetailsCellPadding,pady=DetailsCellPadding)			
+		ZLocation = Tkinter.Label(Status,text=u"Z:  1.0 in",anchor="w")
+		ZLocation.grid(row=0,column=3,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding)		
 		
 		# Vacuum status
-		VacuumStatus = Tkinter.Label(Status,text=u"\n Vacuum:  ON",anchor="w")
-		VacuumStatus.grid(row=0,column=5,padx=DetailsCellPadding,pady=DetailsCellPadding)
+		VacuumStatus = Tkinter.Label(Status,text=u"Vacuum:  ON",anchor="w")
+		VacuumStatus.grid(row=0,column=4,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding)
 		
 		
 		## Manual label
@@ -218,7 +198,11 @@ class boardforge_tk(Tkinter.Tk):
 		FeederLoaded = Tkinter.Label(LoadFeeder,text=u"DRV8818feeder.txt",anchor="w")
 		FeederLoaded.grid(row=0,column=2,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding)
 
-		## Automatic controls		
+		## Automatic controls
+		# Home
+		Home = Tkinter.Button(AutomaticControl,text=u"Home",command=self.OnHomeClick)
+		Home.grid(row=0,column=0,padx=DetailsCellPadding,pady=DetailsCellPadding)	
+		
 		# Play
 		Play = Tkinter.Button(AutomaticControl,text=u"Play",command=self.OnPlayClick)
 		Play.grid(row=0,column=1,padx=DetailsCellPadding,pady=DetailsCellPadding)		
@@ -248,39 +232,34 @@ class boardforge_tk(Tkinter.Tk):
 		VacuumScale.grid(row=1,column=1,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding)		
 		
 		## Component plan step
-		# Home
-		Home = Tkinter.Button(ComponentPlan,text=u"Home",command=self.OnHomeClick)
-		Home.grid(row=0,column=0,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding)
-		
 		# Previous Component
 		PreviousComponent = Tkinter.Button(ComponentPlan,text=u"Previous Component",command=self.OnPreviousComponentClick)
-		PreviousComponent.grid(row=1,column=0,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding)
+		PreviousComponent.grid(row=0,column=0,padx=DetailsCellPadding,pady=DetailsCellPadding)
 
 		# Run Component
 		RunComponent = Tkinter.Button(ComponentPlan,text=u"Run Component",command=self.OnRunComponentClick)
-		RunComponent.grid(row=2,column=0,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding)
+		RunComponent.grid(row=1,column=0,padx=DetailsCellPadding,pady=DetailsCellPadding)
 		
 		# Next Component
 		NextComponent = Tkinter.Button(ComponentPlan,text=u"Next Component",command=self.OnNextComponentClick)
-		NextComponent.grid(row=3,column=0,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding)
+		NextComponent.grid(row=2,column=0,padx=DetailsCellPadding,pady=DetailsCellPadding)
 		
 		## Component plan viewer		
-		ComponentPlanListBox = Tkinter.Listbox(ComponentPlan,width=90)
-		ComponentPlanListBox.grid(row=0,column=1,sticky='NSEW',padx=DetailsCellPadding,pady=DetailsCellPadding,rowspan=4)
+		ComponentPlanListBox = Tkinter.Listbox(ComponentPlan)
+		ComponentPlanListBox.grid(row=0,column=1,sticky='NSEW',padx=DetailsCellPadding,pady=DetailsCellPadding,rowspan=3)
 		
 		ComponentPlanScrollBar = Tkinter.Scrollbar(ComponentPlan)
-		ComponentPlanScrollBar.grid(row=0,column=1,sticky='NSE',padx=DetailsCellPadding,pady=DetailsCellPadding,rowspan=4)
+		ComponentPlanScrollBar.grid(row=0,column=1,sticky='NSE',padx=DetailsCellPadding,pady=DetailsCellPadding,rowspan=3)
 			
 		for i in range(5):
-			ComponentPlanListBox.insert(i,"Pick 0805 1 uf capacitor (C"+str(i)+") from Feeder"+str(i+5)+" (1,"+str(i+5)+"), rotate 90 degrees, and place at "+str(i+5)+",2.")		
+			ComponentPlanListBox.insert(i,"C"+str(i)+" 0805 1 uf capacitor")		
 			
 		for i in range(5):
-			ComponentPlanListBox.insert(i,"Pick 0603 1k ohm resistor (R"+str(i)+") from Feeder"+str(i)+" (1,"+str(i)+"), rotate 0 degrees, and place at "+str(i)+",2.")		
+			ComponentPlanListBox.insert(i,"R"+str(i)+" 0805 1 kohm resistor")
 		
 		ComponentPlanListBox.config(yscrollcommand=ComponentPlanScrollBar.set)
 		ComponentPlanScrollBar.config(command=ComponentPlanListBox.yview)				
 		
-		'''
 		## Gcode Step
 		# Previous gcode
 		PreviousGcode = Tkinter.Button(Gcode,text=u"Previous Gcode",command=self.OnPreviousGcodeClick)
@@ -306,10 +285,10 @@ class boardforge_tk(Tkinter.Tk):
 		
 		GCodeListBox.config(yscrollcommand=GCodeScrollBar.set)
 		GCodeScrollBar.config(command=GCodeListBox.yview)
-		'''
+
 		
 		## Vision
-		Vision = Tkinter.Label(VisionFrame,text=u"Vision",fg='white',bg='black',width='35',height='10')
+		Vision = Tkinter.Label(VisionFrame,text=u"Vision",anchor="w",fg='white',bg='black',width='10',height='10')
 		Vision.grid(row=1,column=0,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding)				
 		
 		# Debugger
@@ -329,8 +308,8 @@ class boardforge_tk(Tkinter.Tk):
 	def OnPortClick(self):
 		self.DebuggerValue.set(u"Port clicked")	
 
-	def OnFindMachineClick(self):
-		self.DebuggerValue.set(u"Find machine clicked")			
+	def OnRefreshClick(self):
+		self.DebuggerValue.set(u"Refresh clicked")			
 
 	def OnConnectClick(self):
 		self.DebuggerValue.set(u"Connect clicked")			
@@ -366,7 +345,7 @@ class boardforge_tk(Tkinter.Tk):
 		self.DebuggerValue.set(u"Vacuum off clicked")	
 
 	def OnVacuumOnClick(self):
-		self.DebuggerValue.set(u"Vacuum on clicked")
+		self.DebuggerValue.set(u"Vacuum on clicked")	
 	
 	def OnSendManualGcode(self):
 		self.DebuggerValue.set(u"Send Manual Gcode clicked")	
@@ -391,10 +370,10 @@ class boardforge_tk(Tkinter.Tk):
 		self.DebuggerValue.set(u"Stop clicked")
 
 	def SpeedScaleSlide(self,Speed):
-		self.DebuggerValue.set(u"Speed "+Speed+"%")
+		self.DebuggerValue.set(u"Speed slided")
 
 	def VacuumScaleSlide(self,VacuumRate):
-		self.DebuggerValue.set(u"Vacuum "+VacuumRate+"%")			
+		self.DebuggerValue.set(u"Vacuum slided")			
 		
 	def OnPreviousComponentClick(self):
 		self.DebuggerValue.set(u"Previous Component clicked")
@@ -404,7 +383,7 @@ class boardforge_tk(Tkinter.Tk):
 		
 	def OnNextComponentClick(self):
 		self.DebuggerValue.set(u"Next Component clicked")
-	'''
+		
 	def OnPreviousGcodeClick(self):
 		self.DebuggerValue.set(u"Previous Gcode clicked")
 
@@ -413,7 +392,7 @@ class boardforge_tk(Tkinter.Tk):
 		
 	def OnNextGcodeClick(self):
 		self.DebuggerValue.set(u"Next Gcode clicked")
-	'''
+
 		
 if __name__ == "__main__":
 	app = boardforge_tk(None)
