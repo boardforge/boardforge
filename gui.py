@@ -74,9 +74,9 @@ class boardforge_tk(Tkinter.Tk):
 		ManualGcodeSend = Tkinter.Frame(self,bg=Background)
 		ManualGcodeSend.grid(row=5,column=3,sticky='NW',padx=SummaryCellPadding,pady=SummaryCellPadding)			
 		
-		# Component plan viewer
-		ComponentPlan = Tkinter.Frame(self,bg=Background)
-		ComponentPlan.grid(row=7,column=0,sticky='SEW',padx=SummaryCellPadding,pady=SummaryCellPadding,columnspan=3)	
+		# Instruction plan viewer
+		InstructionPlan = Tkinter.Frame(self,bg=Background)
+		InstructionPlan.grid(row=7,column=0,sticky='SEW',padx=SummaryCellPadding,pady=SummaryCellPadding,columnspan=3)	
 		
 		AutomaticControl = Tkinter.Frame(self,bg=Background)
 		AutomaticControl.grid(row=8,column=0,padx=SummaryCellPadding,pady=SummaryCellPadding,columnspan=3)			
@@ -246,38 +246,38 @@ class boardforge_tk(Tkinter.Tk):
 		VacuumScale = Tkinter.Scale(MachineSettings,orient='horizontal',command=self.VacuumScaleSlide)
 		VacuumScale.grid(row=1,column=1,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding)		
 		
-		## Component plan step
+		## Instruction plan step
 		# Home
-		Home = Tkinter.Button(ComponentPlan,text=u"Home",command=self.OnHomeClick)
+		Home = Tkinter.Button(InstructionPlan,text=u"Home",command=self.OnHomeClick)
 		Home.grid(row=0,column=0,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding)
 		
-		# Previous Component
-		PreviousComponent = Tkinter.Button(ComponentPlan,text=u"Previous Component",command=self.OnPreviousComponentClick)
-		PreviousComponent.grid(row=1,column=0,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding)
+		# Previous Instruction
+		PreviousInstruction = Tkinter.Button(InstructionPlan,text=u"Select previous",command=self.OnPreviousInstructionClick)
+		PreviousInstruction.grid(row=1,column=0,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding)
 
-		# Run Component
-		RunComponent = Tkinter.Button(ComponentPlan,text=u"Run Component",command=self.OnRunComponentClick)
-		RunComponent.grid(row=2,column=0,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding)
+		# Execute Instruction
+		ExecuteInstruction = Tkinter.Button(InstructionPlan,text=u"Execute selected",command=self.OnExecuteInstructionClick)
+		ExecuteInstruction.grid(row=2,column=0,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding)
 		
-		# Next Component
-		NextComponent = Tkinter.Button(ComponentPlan,text=u"Next Component",command=self.OnNextComponentClick)
-		NextComponent.grid(row=3,column=0,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding)
+		# Next Instruction
+		NextInstruction = Tkinter.Button(InstructionPlan,text=u"Select next",command=self.OnNextInstructionClick)
+		NextInstruction.grid(row=3,column=0,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding)
 		
-		## Component plan viewer		
-		ComponentPlanListBox = Tkinter.Listbox(ComponentPlan,width=90)
-		ComponentPlanListBox.grid(row=0,column=1,sticky='NSEW',padx=DetailsCellPadding,pady=DetailsCellPadding,rowspan=4)
+		## Instruction plan viewer		
+		InstructionPlanListBox = Tkinter.Listbox(InstructionPlan,width=90)
+		InstructionPlanListBox.grid(row=0,column=1,sticky='NSEW',padx=DetailsCellPadding,pady=DetailsCellPadding,rowspan=4)
 		
-		ComponentPlanScrollBar = Tkinter.Scrollbar(ComponentPlan)
-		ComponentPlanScrollBar.grid(row=0,column=1,sticky='NSE',padx=DetailsCellPadding,pady=DetailsCellPadding,rowspan=4)
+		InstructionPlanScrollBar = Tkinter.Scrollbar(InstructionPlan)
+		InstructionPlanScrollBar.grid(row=0,column=1,sticky='NSE',padx=DetailsCellPadding,pady=DetailsCellPadding,rowspan=4)
 			
 		for i in range(5):
-			ComponentPlanListBox.insert(i,"Pick 0805 1 uf capacitor (C"+str(i)+") from Feeder"+str(i+5)+" (1,"+str(i+5)+"), rotate 90 degrees, and place at "+str(i+5)+",2.")		
+			InstructionPlanListBox.insert(i,"Pick 0805 1 uf capacitor (C"+str(i)+") from Feeder"+str(i+5)+" (1,"+str(i+5)+"), rotate 90 degrees, and place at "+str(i+5)+",2.")		
 			
 		for i in range(5):
-			ComponentPlanListBox.insert(i,"Pick 0603 1k ohm resistor (R"+str(i)+") from Feeder"+str(i)+" (1,"+str(i)+"), rotate 0 degrees, and place at "+str(i)+",2.")		
+			InstructionPlanListBox.insert(i,"Pick 0603 1k ohm resistor (R"+str(i)+") from Feeder"+str(i)+" (1,"+str(i)+"), rotate 0 degrees, and place at "+str(i)+",2.")		
 		
-		ComponentPlanListBox.config(yscrollcommand=ComponentPlanScrollBar.set)
-		ComponentPlanScrollBar.config(command=ComponentPlanListBox.yview)				
+		InstructionPlanListBox.config(yscrollcommand=InstructionPlanScrollBar.set)
+		InstructionPlanScrollBar.config(command=InstructionPlanListBox.yview)				
 				
 		## Vision
 		Vision = Tkinter.Label(VisionFrame,text=u"Vision",fg='white',bg='black',width='35',height='10')
@@ -402,14 +402,14 @@ class boardforge_tk(Tkinter.Tk):
 	def VacuumScaleSlide(self,VacuumRate):
 		self.DebuggerValue.set(u"Vacuum "+VacuumRate+"%")			
 		
-	def OnPreviousComponentClick(self):
-		self.DebuggerValue.set(u"Previous Component clicked")
+	def OnPreviousInstructionClick(self):
+		self.DebuggerValue.set(u"Previous Instruction clicked")
 
-	def OnRunComponentClick(self):
-		self.DebuggerValue.set(u"Run Component clicked")		
+	def OnExecuteInstructionClick(self):
+		self.DebuggerValue.set(u"Execute Instruction clicked")		
 		
-	def OnNextComponentClick(self):
-		self.DebuggerValue.set(u"Next Component clicked")
+	def OnNextInstructionClick(self):
+		self.DebuggerValue.set(u"Next Instruction clicked")
 	'''
 	def OnPreviousGcodeClick(self):
 		self.DebuggerValue.set(u"Previous Gcode clicked")
