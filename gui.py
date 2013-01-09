@@ -15,12 +15,16 @@
 #
 #	Adapted from: 
 #	Simple example of python and tkinter - http://sebsauvage.net/python/gui/
-#	File loading - http://tkinter.unpythonic.net/wiki/tkFileDialog
+#	Serial example with printcore and pyserial - https://github.com/kliment/Printrun
+#	File browsing - http://tkinter.unpythonic.net/wiki/tkFileDialog
+#	File open - http://www.tutorialspoint.com/python/python_files_io.htm
+#	File readlines - http://www.peterbe.com/plog/blogitem-040312-1
+#	String split - http://www.webmasterwords.com/python-split-and-join-examples
 #	Gcode area listbox - http://www.tutorialspoint.com/python/tk_listbox.htm
 #	Gcode area scrollbar - http://effbot.org/zone/tkinter-scrollbar-patterns.htm
 # 	Menu - http://www.tutorialspoint.com/python/tk_menubutton.htm
 
-import Tkinter
+import Tkinter, Tkconstants, tkFileDialog
 
 class boardforge_tk(Tkinter.Tk):
 	def __init__(self,parent):
@@ -74,12 +78,6 @@ class boardforge_tk(Tkinter.Tk):
 		ComponentPlan = Tkinter.Frame(self,bg=Background)
 		ComponentPlan.grid(row=7,column=0,sticky='SEW',padx=SummaryCellPadding,pady=SummaryCellPadding,columnspan=3)	
 		
-		'''
-		# Gcode viewer
-		Gcode = Tkinter.Frame(self,bg=Background)
-		Gcode.grid(row=7,column=3,sticky='SEW',padx=SummaryCellPadding,pady=SummaryCellPadding)			
-		'''
-		
 		AutomaticControl = Tkinter.Frame(self,bg=Background)
 		AutomaticControl.grid(row=8,column=0,padx=SummaryCellPadding,pady=SummaryCellPadding,columnspan=3)			
 		
@@ -87,13 +85,14 @@ class boardforge_tk(Tkinter.Tk):
 		Debugger = Tkinter.Frame(self,bg=Background)
 		Debugger.grid(row=9,column=0,sticky='S',padx=SummaryCellPadding,pady=SummaryCellPadding,columnspan=3)
 		
+		
 		### Layout details
 		## Connect machine		
 		# Find Machine
 		FindMachine = Tkinter.Button(ConnectMachine,text=u"Find machine",command=self.OnFindMachineClick)
 		FindMachine.grid(row=0,column=0,padx=DetailsCellPadding,pady=DetailsCellPadding)
 		
-		## Serial port selector		
+		# Serial port selector		
 		SerialPorts = Tkinter.Listbox(ConnectMachine,height=3,width=10)
 		SerialPorts.grid(row=0,column=1,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding,rowspan=3)
 		
@@ -199,7 +198,7 @@ class boardforge_tk(Tkinter.Tk):
 		AutomaticControlTitle.grid(row=0,column=0,sticky='W',padx=LabelCellPadding,pady=LabelCellPadding)	
 		
 		
-		## Load centroid file
+		## Load centroid file	
 		# Browse for file
 		CentroidBrowse = Tkinter.Button(LoadCentroid,text=u"Browse for Centroid file...",command=self.OnCentroidBrowseClick)
 		CentroidBrowse.grid(row=0,column=1,padx=DetailsCellPadding,pady=DetailsCellPadding)
@@ -279,35 +278,7 @@ class boardforge_tk(Tkinter.Tk):
 		
 		ComponentPlanListBox.config(yscrollcommand=ComponentPlanScrollBar.set)
 		ComponentPlanScrollBar.config(command=ComponentPlanListBox.yview)				
-		
-		'''
-		## Gcode Step
-		# Previous gcode
-		PreviousGcode = Tkinter.Button(Gcode,text=u"Previous Gcode",command=self.OnPreviousGcodeClick)
-		PreviousGcode.grid(row=0,column=0,padx=DetailsCellPadding,pady=DetailsCellPadding)
-
-		# Run line
-		RunGcode = Tkinter.Button(Gcode,text=u"Run Gcode",command=self.OnRunGcodeClick)
-		RunGcode.grid(row=1,column=0,padx=DetailsCellPadding,pady=DetailsCellPadding)
-		
-		# Next line
-		NextGcode = Tkinter.Button(Gcode,text=u"Next Gcode",command=self.OnNextGcodeClick)
-		NextGcode.grid(row=2,column=0,padx=DetailsCellPadding,pady=DetailsCellPadding)
-		
-		## G Code viewer		
-		GCodeListBox = Tkinter.Listbox(Gcode)
-		GCodeListBox.grid(row=0,column=1,sticky='NSEW',padx=DetailsCellPadding,pady=DetailsCellPadding,rowspan=3)
-		
-		GCodeScrollBar = Tkinter.Scrollbar(Gcode)
-		GCodeScrollBar.grid(row=0,column=1,sticky='NSE',padx=DetailsCellPadding,pady=DetailsCellPadding,rowspan=3)
-		
-		for i in range(100):
-			GCodeListBox.insert(i,"g0 x"+str(i)+" f1600")
-		
-		GCodeListBox.config(yscrollcommand=GCodeScrollBar.set)
-		GCodeScrollBar.config(command=GCodeListBox.yview)
-		'''
-		
+				
 		## Vision
 		Vision = Tkinter.Label(VisionFrame,text=u"Vision",fg='white',bg='black',width='35',height='10')
 		Vision.grid(row=1,column=0,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding)				
@@ -372,11 +343,46 @@ class boardforge_tk(Tkinter.Tk):
 		self.DebuggerValue.set(u"Send Manual Gcode clicked")	
 		#  how pass string to this?
 		
-	def OnFeederBrowseClick(self):
-		self.DebuggerValue.set(u"Browse for feeder clicked")	
-
 	def OnCentroidBrowseClick(self):
 		self.DebuggerValue.set(u"Browse for centroid clicked")		
+		
+		# Open the centroid file and convert it into a list of lists, CentroidList
+		# The parent list is a list of the file's line numbers.
+		# Each child list is of the form [Designator, Footprint, Mid X, Mid Y, Ref X, Ref Y, Pad X, Pad Y, TB, Rotation, Comment]
+		CentroidList = []
+		CentroidFile = open('C:/Users/jmcalvay/Documents/Dropbox/Projects/GitHub/boardforge/DRV8818centroid.txt','r')
+		CentroidLines = CentroidFile.readlines()
+		"Read Line: %s" % (CentroidLines)
+		CentroidLength = len(CentroidLines) - 1
+		
+		for i in range(2, CentroidLength):
+			CentroidSplitLines = CentroidLines[i].split()
+			
+			# Remove mil suffix
+			CentroidLinesNoMil = []
+			SplitLinesLength = len(CentroidSplitLines)
+			
+			for j in range(SplitLinesLength):
+				CentroidLinesNoMil.append(CentroidSplitLines[j].rstrip('mil'))
+			
+			# Convert mils to inches
+			CentroidLinesInches = CentroidLinesNoMil
+			
+			for j in range(2, 8):
+				CentroidLinesInches[j] = str(float(CentroidLinesInches[j])/1000)
+			
+			CentroidList.append(CentroidLinesInches)
+		
+		print CentroidList
+		
+		CentroidFile.close()
+		
+		'''
+		CentroidGcode = "g0 x"+CentroidSplitLinesXNoMilInches+" y"+CentroidSplitLinesYNoMilInches+" f1600"
+		print CentroidGcode
+		'''
+	def OnFeederBrowseClick(self):
+		self.DebuggerValue.set(u"Browse for feeder clicked")		
 		
 	def OnHomeClick(self):
 		self.DebuggerValue.set(u"Home clicked")
