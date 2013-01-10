@@ -1,15 +1,15 @@
-Designator Footprint               Mid X         Mid Y         Ref X         Ref Y         Pad X         Pad Y TB      Rotation Comment        
+Designator Feeder               Mid X         Mid Y         Ref X         Ref Y         Pad X         Pad Y TB      Rotation Comment        
 
-JP7        JMP0.2                2550mil       1100mil       2500mil       1100mil       2500mil       1100mil  T        360.00 MCU PWR        
-R109       0603              3817.945mil        253mil       3852mil        253mil       3852mil        253mil  T        180.00 Res2           
-R108       0603              3817.945mil     346.75mil       3852mil     346.75mil       3852mil     346.75mil  T        180.00 Res2           
-R107       0603              3817.945mil      440.5mil       3852mil      440.5mil       3852mil      440.5mil  T        180.00 Res2           
-R106       0603              3817.945mil     534.25mil       3852mil     534.25mil       3852mil     534.25mil  T        180.00 Res2           
-R105       0603              3817.945mil        628mil       3852mil        628mil       3852mil        628mil  T        180.00 Res2           
-R104       0603              3817.945mil     721.75mil       3852mil     721.75mil       3852mil     721.75mil  T        180.00 Res2           
-R103       0603              3817.945mil      815.5mil       3852mil      815.5mil       3852mil      815.5mil  T        180.00 Res2           
-R102       0603              3817.945mil     909.25mil       3852mil     909.25mil       3852mil     909.25mil  T        180.00 Res2           
-R101       0603              3817.945mil       1003mil       3852mil       1003mil       3852mil       1003mil  T        180.00 Res2           
+JP7        2                   1000mil       500mil       2500mil       1100mil       2500mil       1100mil  T        360.00 MCU PWR        
+R109       1                   1000mil       1000mil       3852mil        253mil       3852mil        253mil  T        180.00 Res2           
+R108       4                   1000mil    1500mil       3852mil     346.75mil       3852mil     346.75mil  T        180.00 Res2           
+R107       3                   1000mil      2000mil       3852mil      440.5mil       3852mil      440.5mil  T        180.00 Res2           
+R106       6                   1000mil     2500mil       3852mil     534.25mil       3852mil     534.25mil  T        180.00 Res2           
+R105       5                   1000mil        3000mil       3852mil        628mil       3852mil        628mil  T        180.00 Res2           
+R104       8                   1000mil     3500mil       3852mil     721.75mil       3852mil     721.75mil  T        180.00 Res2           
+R103       7                   1000mil      4000mil       3852mil      815.5mil       3852mil      815.5mil  T        180.00 Res2           
+R102       10                   1000mil     4500mil       3852mil     909.25mil       3852mil     909.25mil  T        180.00 Res2           
+R101       9                  1000mil       5000mil       3852mil       1003mil       3852mil       1003mil  T        180.00 Res2           
 J6         HDR1X9                4200mil       1350mil       4200mil        950mil       4200mil        950mil  T         90.00 Header 9       
 JP6        JMP0.3                1700mil       2250mil       1700mil       2150mil       1700mil       2150mil  T         90.00 DECAY_SELECT   
 J1         PWR_CONN2             1200mil       4900mil       1100mil       4900mil       1100mil       4900mil  T          0.00 Header 2       

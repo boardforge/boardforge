@@ -25,12 +25,13 @@
 # 	Menu - http://www.tutorialspoint.com/python/tk_menubutton.htm
 
 import Tkinter, Tkconstants, tkFileDialog
+CentroidLoadSuccess = False	
 
 class boardforge_tk(Tkinter.Tk):
 	def __init__(self,parent):
 		Tkinter.Tk.__init__(self,parent)
 		self.parent = parent
-		self.initialize()
+		self.initialize()	
 	
 	def initialize(self):
 		self.grid()
@@ -39,8 +40,7 @@ class boardforge_tk(Tkinter.Tk):
 		SummaryCellPadding = 5
 		DetailsCellPadding = 5
 		Background = '#D4D0C8' # Default #D4D0C8
-		
-		
+				
 		### Layout summary		
 		ConnectMachine = Tkinter.Frame(self,bg=Background)
 		ConnectMachine.grid(row=0,column=0,sticky='W',padx=SummaryCellPadding,pady=SummaryCellPadding,columnspan=4)
@@ -269,10 +269,7 @@ class boardforge_tk(Tkinter.Tk):
 		
 		InstructionPlanScrollBar = Tkinter.Scrollbar(InstructionPlan)
 		InstructionPlanScrollBar.grid(row=0,column=1,sticky='NSE',padx=DetailsCellPadding,pady=DetailsCellPadding,rowspan=4)
-			
-		for i in range(5):
-			InstructionPlanListBox.insert(i,"Pick 0805 1 uf capacitor (C"+str(i)+") from Feeder"+str(i+5)+" (1,"+str(i+5)+"), rotate 90 degrees, and place at "+str(i+5)+",2.")		
-			
+				
 		for i in range(5):
 			InstructionPlanListBox.insert(i,"Pick 0603 1k ohm resistor (R"+str(i)+") from Feeder"+str(i)+" (1,"+str(i)+"), rotate 0 degrees, and place at "+str(i)+",2.")		
 		
@@ -373,14 +370,53 @@ class boardforge_tk(Tkinter.Tk):
 			
 			CentroidList.append(CentroidLinesInches)
 		
-		print CentroidList
+		# To do:  make file to list of list conversions a function that gets called by centroid and feeder
+		# Open the feeder file and convert it into a list of lists, FeederList
+		# The parent list is a list of the file's line numbers.
+		# Each child list is of the form [Designator, Feeder, FeederX, FeederY, Ref X, Ref Y, Pad X, Pad Y, TB, Rotation, Comment]
+		FeederList = []
+		FeederFile = open('C:/Users/jmcalvay/Documents/Dropbox/Projects/GitHub/boardforge/DRV8818feeder.txt','r')
+		FeederLines = FeederFile.readlines()
+		"Read Line: %s" % (FeederLines)
+		FeederLength = len(FeederLines) - 1
 		
-		CentroidFile.close()
+		for i in range(2, FeederLength):
+			FeederSplitLines = FeederLines[i].split()
+			
+			# Remove mil suffix
+			FeederLinesNoMil = []
+			FeederSplitLinesLength = len(FeederSplitLines)
+			
+			for j in range(FeederSplitLinesLength):
+				FeederLinesNoMil.append(FeederSplitLines[j].rstrip('mil'))
+			
+			# Convert mils to inches
+			FeederLinesInches = FeederLinesNoMil
+			
+			for j in range(2, 8):
+				FeederLinesInches[j] = str(float(FeederLinesInches[j])/1000)
+			
+			FeederList.append(FeederLinesInches)
 		
-		'''
-		CentroidGcode = "g0 x"+CentroidSplitLinesXNoMilInches+" y"+CentroidSplitLinesYNoMilInches+" f1600"
-		print CentroidGcode
-		'''
+		
+		# load CentroidList into listbox
+		Instructions = []
+		CentroidListLength = len(CentroidList) - 1	
+		
+		for i in range(CentroidListLength):
+			# InstructionPlanListBox.insert(i,"Pick "+CentroidList[0][10]+" from Feeder"+str(i)+" (X,Y), rotate "+CentroidList[0][9]+" degrees, and place at "+CentroidList[0][2]+","+CentroidList[0][3]+"")				
+			Instructions.append("Pick "+CentroidList[i][1]+" "+CentroidList[i][10]+" ("+CentroidList[i][0]+") from Feeder"+FeederList[i][1]+" ("+FeederList[i][2]+","+FeederList[i][3]+"), rotate "+CentroidList[i][9]+" degrees, and place at "+CentroidList[i][2]+","+CentroidList[i][3]+"")				 
+			
+		# print Instructions
+		
+		# Generate gcode
+		Gcode = []
+		for i in range(CentroidListLength):
+			Gcode.append("g0 x"+FeederList[i][2]+" y"+FeederList[i][3]+" f1600")
+			Gcode.append("g0 x"+CentroidList[i][2]+" y"+CentroidList[i][3]+" f1600")
+		
+		print Gcode
+		
 	def OnFeederBrowseClick(self):
 		self.DebuggerValue.set(u"Browse for feeder clicked")		
 		
