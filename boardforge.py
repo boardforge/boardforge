@@ -197,8 +197,9 @@ class boardforge_tk(Tkinter.Tk):
 		AutomaticControlTitle = Tkinter.Label(AutomaticLabel,text=u"\n Automatic Control:",anchor="w")
 		AutomaticControlTitle.grid(row=0,column=0,sticky='W',padx=LabelCellPadding,pady=LabelCellPadding)	
 		
-		
 		## Load centroid file	
+		self.CentroidList = []
+		
 		# Browse for file
 		CentroidBrowse = Tkinter.Button(LoadCentroid,text=u"Browse for Centroid file...",command=self.OnCentroidBrowseClick)
 		CentroidBrowse.grid(row=0,column=1,padx=DetailsCellPadding,pady=DetailsCellPadding)
@@ -207,8 +208,8 @@ class boardforge_tk(Tkinter.Tk):
 		CentroidLoaded = Tkinter.Label(LoadCentroid,text=u"DRV8818centroid.txt",anchor="w")
 		CentroidLoaded.grid(row=0,column=2,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding)		
 		
-		
 		## Load feeder file
+		self.FeederList = []
 		# Browse for file
 		FeederBrowse = Tkinter.Button(LoadFeeder,text=u"Browse for Feeder file...",command=self.OnFeederBrowseClick)
 		FeederBrowse.grid(row=0,column=1,padx=DetailsCellPadding,pady=DetailsCellPadding)
@@ -264,17 +265,14 @@ class boardforge_tk(Tkinter.Tk):
 		NextInstruction.grid(row=3,column=0,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding)
 		
 		## Instruction plan viewer		
-		InstructionPlanListBox = Tkinter.Listbox(InstructionPlan,width=90)
-		InstructionPlanListBox.grid(row=0,column=1,sticky='NSEW',padx=DetailsCellPadding,pady=DetailsCellPadding,rowspan=4)
-		
+		self.InstructionPlanListBox = Tkinter.Listbox(InstructionPlan,width=90)
+		self.InstructionPlanListBox.grid(row=0,column=1,sticky='NSEW',padx=DetailsCellPadding,pady=DetailsCellPadding,rowspan=4)
+	
 		InstructionPlanScrollBar = Tkinter.Scrollbar(InstructionPlan)
 		InstructionPlanScrollBar.grid(row=0,column=1,sticky='NSE',padx=DetailsCellPadding,pady=DetailsCellPadding,rowspan=4)
-				
-		for i in range(5):
-			InstructionPlanListBox.insert(i,"Pick 0603 1k ohm resistor (R"+str(i)+") from Feeder"+str(i)+" (1,"+str(i)+"), rotate 0 degrees, and place at "+str(i)+",2.")		
 		
-		InstructionPlanListBox.config(yscrollcommand=InstructionPlanScrollBar.set)
-		InstructionPlanScrollBar.config(command=InstructionPlanListBox.yview)				
+		self.InstructionPlanListBox.config(yscrollcommand=InstructionPlanScrollBar.set)
+		InstructionPlanScrollBar.config(command=self.InstructionPlanListBox.yview)				
 				
 		## Vision
 		Vision = Tkinter.Label(VisionFrame,text=u"Vision",fg='white',bg='black',width='35',height='10')
@@ -340,13 +338,29 @@ class boardforge_tk(Tkinter.Tk):
 		self.DebuggerValue.set(u"Send Manual Gcode clicked")	
 		#  how pass string to this?
 		
+	def CentroidAndFeederLoaded(self):
+		# check if centroid and feeder are loaded	
+		if(self.CentroidList and self.FeederList):
+			CentroidListLength = len(self.CentroidList) - 1
+			# populate instructions list box
+			for i in range(CentroidListLength):
+				self.InstructionPlanListBox.insert(i,"Pick "+self.CentroidList[i][1]+" "+self.CentroidList[i][10]+" ("+self.CentroidList[i][0]+") from Feeder"+self.FeederList[i][1]+" ("+self.FeederList[i][2]+","+self.FeederList[i][3]+"), rotate "+self.CentroidList[i][9]+" degrees, and place at "+self.CentroidList[i][2]+","+self.CentroidList[i][3]+"")				 
+		
+			# Generate gcode
+			Gcode = []
+			for i in range(CentroidListLength):
+				Gcode.append("g0 x"+self.FeederList[i][2]+" y"+self.FeederList[i][3]+" f1600")
+				Gcode.append("g0 x"+self.CentroidList[i][2]+" y"+self.CentroidList[i][3]+" f1600")
+			
+			print Gcode
+		
+		
 	def OnCentroidBrowseClick(self):
 		self.DebuggerValue.set(u"Browse for centroid clicked")		
 		
 		# Open the centroid file and convert it into a list of lists, CentroidList
 		# The parent list is a list of the file's line numbers.
 		# Each child list is of the form [Designator, Footprint, Mid X, Mid Y, Ref X, Ref Y, Pad X, Pad Y, TB, Rotation, Comment]
-		CentroidList = []
 		CentroidFile = open('C:/Users/jmcalvay/Documents/Dropbox/Projects/GitHub/boardforge/DRV8818centroid.txt','r')
 		CentroidLines = CentroidFile.readlines()
 		"Read Line: %s" % (CentroidLines)
@@ -368,13 +382,17 @@ class boardforge_tk(Tkinter.Tk):
 			for j in range(2, 8):
 				CentroidLinesInches[j] = str(float(CentroidLinesInches[j])/1000)
 			
-			CentroidList.append(CentroidLinesInches)
+			self.CentroidList.append(CentroidLinesInches)
+		
+		self.CentroidAndFeederLoaded()
+		
+	def OnFeederBrowseClick(self):
+		self.DebuggerValue.set(u"Browse for feeder clicked")		
 		
 		# To do:  make file to list of list conversions a function that gets called by centroid and feeder
 		# Open the feeder file and convert it into a list of lists, FeederList
 		# The parent list is a list of the file's line numbers.
 		# Each child list is of the form [Designator, Feeder, FeederX, FeederY, Ref X, Ref Y, Pad X, Pad Y, TB, Rotation, Comment]
-		FeederList = []
 		FeederFile = open('C:/Users/jmcalvay/Documents/Dropbox/Projects/GitHub/boardforge/DRV8818feeder.txt','r')
 		FeederLines = FeederFile.readlines()
 		"Read Line: %s" % (FeederLines)
@@ -396,29 +414,9 @@ class boardforge_tk(Tkinter.Tk):
 			for j in range(2, 8):
 				FeederLinesInches[j] = str(float(FeederLinesInches[j])/1000)
 			
-			FeederList.append(FeederLinesInches)
+			self.FeederList.append(FeederLinesInches)		
 		
-		
-		# load CentroidList into listbox
-		Instructions = []
-		CentroidListLength = len(CentroidList) - 1	
-		
-		for i in range(CentroidListLength):
-			# InstructionPlanListBox.insert(i,"Pick "+CentroidList[0][10]+" from Feeder"+str(i)+" (X,Y), rotate "+CentroidList[0][9]+" degrees, and place at "+CentroidList[0][2]+","+CentroidList[0][3]+"")				
-			Instructions.append("Pick "+CentroidList[i][1]+" "+CentroidList[i][10]+" ("+CentroidList[i][0]+") from Feeder"+FeederList[i][1]+" ("+FeederList[i][2]+","+FeederList[i][3]+"), rotate "+CentroidList[i][9]+" degrees, and place at "+CentroidList[i][2]+","+CentroidList[i][3]+"")				 
-			
-		# print Instructions
-		
-		# Generate gcode
-		Gcode = []
-		for i in range(CentroidListLength):
-			Gcode.append("g0 x"+FeederList[i][2]+" y"+FeederList[i][3]+" f1600")
-			Gcode.append("g0 x"+CentroidList[i][2]+" y"+CentroidList[i][3]+" f1600")
-		
-		print Gcode
-		
-	def OnFeederBrowseClick(self):
-		self.DebuggerValue.set(u"Browse for feeder clicked")		
+		self.CentroidAndFeederLoaded()
 		
 	def OnHomeClick(self):
 		self.DebuggerValue.set(u"Home clicked")
