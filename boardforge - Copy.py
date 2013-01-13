@@ -223,8 +223,6 @@ class boardforge_tk(Tkinter.Tk):
 		# File loaded
 		FeederLoaded = Tkinter.Label(LoadFeeder,text=u"DRV8818feeder.txt",anchor="w")
 		FeederLoaded.grid(row=0,column=2,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding)
-		
-		self.Gcode = []
 
 		## Automatic controls		
 		# Play
@@ -351,6 +349,27 @@ class boardforge_tk(Tkinter.Tk):
 		self.DebuggerValue.set(u"Send Manual Gcode clicked")	
 		#  how pass string to this?
 		
+	def CentroidAndFeederLoaded(self):
+		# check if centroid and feeder are loaded	
+		if(self.CentroidList and self.FeederList):
+			CentroidListLength = len(self.CentroidList) - 1
+			# populate instructions list box
+			for i in range(CentroidListLength):
+				self.InstructionPlanListBox.insert(i,"Pick "+self.CentroidList[i][1]+" "+self.CentroidList[i][10]+" ("+self.CentroidList[i][0]+") from Feeder"+self.FeederList[i][1]+" ("+self.FeederList[i][2]+","+self.FeederList[i][3]+"), rotate "+self.CentroidList[i][9]+" degrees, and place at "+self.CentroidList[i][2]+","+self.CentroidList[i][3]+"")				 
+		
+			# Generate gcode
+			self.Gcode = []
+			for i in range(CentroidListLength):
+				self.Gcode.append("g0 x"+self.FeederList[i][2]+" y"+self.FeederList[i][3]+" f1600")
+				self.Gcode.append("g0 x"+self.CentroidList[i][2]+" y"+self.CentroidList[i][3]+" f1600")
+			
+			print self.Gcode
+			
+			for i in range(CentroidListLength):
+				print self.Gcode[i]
+				self.SerialConnection.write(self.Gcode[i] + '\n') # Send g-code block to grbl
+		
+		
 	def OnCentroidBrowseClick(self):
 		self.DebuggerValue.set(u"Browse for centroid clicked")		
 		
@@ -413,32 +432,12 @@ class boardforge_tk(Tkinter.Tk):
 			self.FeederList.append(FeederLinesInches)		
 		
 		self.CentroidAndFeederLoaded()
-
-		
-	def CentroidAndFeederLoaded(self):
-		# check if centroid and feeder are loaded	
-		if(self.CentroidList and self.FeederList):
-			CentroidListLength = len(self.CentroidList) - 1
-			# populate instructions list box
-			for i in range(CentroidListLength):
-				self.InstructionPlanListBox.insert(i,"Pick "+self.CentroidList[i][1]+" "+self.CentroidList[i][10]+" ("+self.CentroidList[i][0]+") from Feeder"+self.FeederList[i][1]+" ("+self.FeederList[i][2]+","+self.FeederList[i][3]+"), rotate "+self.CentroidList[i][9]+" degrees, and place at "+self.CentroidList[i][2]+","+self.CentroidList[i][3]+"")				 
-		
-			# Generate gcode
-			for i in range(CentroidListLength):
-				self.Gcode.append("g0 x"+self.FeederList[i][2]+" y"+self.FeederList[i][3]+" f1600")
-				self.Gcode.append("g0 x"+self.CentroidList[i][2]+" y"+self.CentroidList[i][3]+" f1600")
 		
 	def OnHomeClick(self):
 		self.DebuggerValue.set(u"Home clicked")
 		
 	def OnPlayClick(self):
 		self.DebuggerValue.set(u"Play clicked")
-		# If centroid and feeder lists are populated, then send gcode to machine
-		if(self.CentroidList and self.FeederList):
-			CentroidListLength = len(self.CentroidList) - 1
-			for i in range(CentroidListLength):
-				print self.Gcode[i]
-				self.SerialConnection.write(self.Gcode[i] + '\n')		
 
 	def OnPauseClick(self):
 		self.DebuggerValue.set(u"Pause clicked")		
