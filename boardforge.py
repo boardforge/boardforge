@@ -1,4 +1,3 @@
-# test
 #	This file is part of Board Forge (TM) www.boardforge.com
 #
 #	Board Forge (TM) is free software: you can redistribute it and/or modify
