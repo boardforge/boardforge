@@ -15,7 +15,7 @@
 #
 #	Adapted from: 
 #	Simple example of python and tkinter - http://sebsauvage.net/python/gui/
-#	Serial example with printcore and pyserial - https://github.com/kliment/Printrun
+#   Serial control from http://onehossshay.wordpress.com/2011/08/26/grbl-a-simple-python-interface/
 #	File browsing - http://tkinter.unpythonic.net/wiki/tkFileDialog
 #	File open - http://www.tutorialspoint.com/python/python_files_io.htm
 #	File readlines - http://www.peterbe.com/plog/blogitem-040312-1
@@ -24,8 +24,12 @@
 #	Gcode area scrollbar - http://effbot.org/zone/tkinter-scrollbar-patterns.htm
 # 	Menu - http://www.tutorialspoint.com/python/tk_menubutton.htm
 
+# For gui
 import Tkinter, Tkconstants, tkFileDialog
-CentroidLoadSuccess = False	
+
+# For serial communication
+import serial
+import time
 
 class boardforge_tk(Tkinter.Tk):
 	def __init__(self,parent):
@@ -107,6 +111,8 @@ class boardforge_tk(Tkinter.Tk):
 		
 		
 		# Connect
+		self.SerialConnection = serial.Serial('COM12',115200)
+			
 		Connect = Tkinter.Button(ConnectMachine,text=u"Connect",command=self.OnConnectClick)
 		Connect.grid(row=0,column=2,padx=DetailsCellPadding,pady=DetailsCellPadding)	
 		
@@ -299,10 +305,15 @@ class boardforge_tk(Tkinter.Tk):
 		self.DebuggerValue.set(u"Find machine clicked")			
 
 	def OnConnectClick(self):
-		self.DebuggerValue.set(u"Connect clicked")			
+		self.DebuggerValue.set(u"Connect clicked")
+		# Wake up grbl
+		self.SerialConnection.write("\r\n\r\n")
+		time.sleep(2)   # Wait for grbl to initialize
+		self.SerialConnection.flushInput()  # Flush startup text in serial input
 		
 	def OnDisconnectClick(self):
-		self.DebuggerValue.set(u"Disconnect clicked")	
+		self.DebuggerValue.set(u"Disconnect clicked")
+		self.SerialConnection.close()
 		
 	def OnMinusXClick(self):
 		self.DebuggerValue.set(u"-X clicked")	
@@ -353,6 +364,10 @@ class boardforge_tk(Tkinter.Tk):
 				Gcode.append("g0 x"+self.CentroidList[i][2]+" y"+self.CentroidList[i][3]+" f1600")
 			
 			print Gcode
+			
+			for i in range(CentroidListLength):
+				print Gcode[i]
+				self.SerialConnection.write(Gcode[i] + '\n') # Send g-code block to grbl
 		
 		
 	def OnCentroidBrowseClick(self):
