@@ -1,6 +1,6 @@
 Designator Footprint               Mid X         Mid Y         Ref X         Ref Y         Pad X         Pad Y TB      Rotation Comment        
 
-JP7        JMP0.2                2550mil       1100mil       2500mil       1100mil       2500mil       1100mil  T        360.00 MCU PWR        
+J P7        JMP0.2                2550mil       1100mil       2500mil       1100mil       2500mil       1100mil  T        360.00 MCU PWR        
 R109       0603              3817.945mil        253mil       3852mil        253mil       3852mil        253mil  T        180.00 Res2           
 R108       0603              3817.945mil     346.75mil       3852mil     346.75mil       3852mil     346.75mil  T        180.00 Res2           
 R107       0603              3817.945mil      440.5mil       3852mil      440.5mil       3852mil      440.5mil  T        180.00 Res2           

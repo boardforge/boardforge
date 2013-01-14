@@ -15,19 +15,20 @@
 #
 #	Adapted from: 
 #	Simple example of python and tkinter - http://sebsauvage.net/python/gui/
-#   Serial control from http://onehossshay.wordpress.com/2011/08/26/grbl-a-simple-python-interface/
-#	File browsing - http://tkinter.unpythonic.net/wiki/tkFileDialog
-#	File open - http://www.tutorialspoint.com/python/python_files_io.htm
-#	File readlines - http://www.peterbe.com/plog/blogitem-040312-1
-#	String split - http://www.webmasterwords.com/python-split-and-join-examples
-#	Gcode area listbox - http://www.tutorialspoint.com/python/tk_listbox.htm
-#	Gcode area scrollbar - http://effbot.org/zone/tkinter-scrollbar-patterns.htm
-# 	Menu - http://www.tutorialspoint.com/python/tk_menubutton.htm
-
-# For gui
+#	File opening and parsing
+#		File browsing - http://tkinter.unpythonic.net/wiki/tkFileDialog
+#		File open - http://www.tutorialspoint.com/python/python_files_io.htm
+#		File readlines - http://www.peterbe.com/plog/blogitem-040312-1
+#		String split - http://www.webmasterwords.com/python-split-and-join-examples
+#	Listboxes
+#		Gcode area listbox - http://www.tutorialspoint.com/python/tk_listbox.htm
+#		Gcode area scrollbar - http://effbot.org/zone/tkinter-scrollbar-patterns.htm
+#	Multithreading - http://www.tutorialspoint.com/python/python_multithreading.htm
+#   Serial control - http://onehossshay.wordpress.com/2011/08/26/grbl-a-simple-python-interface/
+# Import libraries for gui
 import Tkinter, Tkconstants, tkFileDialog
 
-# For serial communication
+# Import libraries for serial communication
 import serial
 import time
 
@@ -36,7 +37,7 @@ class boardforge_tk(Tkinter.Tk):
 		Tkinter.Tk.__init__(self,parent)
 		self.parent = parent
 		self.initialize()	
-	
+		
 	def initialize(self):
 		self.grid()
 		### Layout settings
@@ -224,6 +225,7 @@ class boardforge_tk(Tkinter.Tk):
 		FeederLoaded = Tkinter.Label(LoadFeeder,text=u"DRV8818feeder.txt",anchor="w")
 		FeederLoaded.grid(row=0,column=2,sticky='W',padx=DetailsCellPadding,pady=DetailsCellPadding)
 		
+		# Create list to store gcode when centroid and feeder are loaded
 		self.Gcode = []
 
 		## Automatic controls		
@@ -232,6 +234,10 @@ class boardforge_tk(Tkinter.Tk):
 		Play.grid(row=0,column=1,padx=DetailsCellPadding,pady=DetailsCellPadding)		
 
 		# Pause
+		self.IsPaused = Tkinter.BooleanVar()
+		self.IsPaused = False
+		print self.IsPaused
+		
 		Pause = Tkinter.Button(AutomaticControl,text=u"PAUSE",command=self.OnPauseClick,bg='red',fg='white')
 		Pause.grid(row=0,column=2,padx=DetailsCellPadding,pady=DetailsCellPadding)	
 
@@ -436,12 +442,17 @@ class boardforge_tk(Tkinter.Tk):
 		# If centroid and feeder lists are populated, then send gcode to machine
 		if(self.CentroidList and self.FeederList):
 			CentroidListLength = len(self.CentroidList) - 1
+			
 			for i in range(CentroidListLength):
-				print self.Gcode[i]
-				self.SerialConnection.write(self.Gcode[i] + '\n')		
+				if(self.IsPaused == False):
+					print self.Gcode[i]
+					self.SerialConnection.write(self.Gcode[i] + '\n')
+					time.sleep(0.25)			
 
 	def OnPauseClick(self):
 		self.DebuggerValue.set(u"Pause clicked")		
+		self.IsPaused = not(self.IsPaused)
+		print self.IsPaused
 		
 	def OnStopClick(self):
 		self.DebuggerValue.set(u"Stop clicked")
